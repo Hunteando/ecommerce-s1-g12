@@ -1,3 +1,4 @@
+// @ts-check --> permite ver si hay posibles errores sin la necesidad de hacer el codigo en typescript
 const sequelize = require("../config/db");
 const compras = require("../models/compra")(sequelize);
 const producto = require("../models/producto")(sequelize);
@@ -15,7 +16,7 @@ const getComprasById = async(req, res) =>{
     try {
         const response = await compras.findOne({
             where:{
-                id: req.params.id
+                ID: req.params.ID
             }
         });
         res.status(200).json(response);
@@ -35,6 +36,9 @@ const realizarCompra = async(req, res) =>{
             CANTIDAD: req.body.CANTIDAD,
             PRECIO_TOTAL:req.body.PRECIO_TOTAL
         });
+
+        await compras.addproducto(req.body.PRODUCTO);
+
         res.status(201).json({id, msg: "compra realizada"});
     } catch (error) {
         console.log(error.message);
